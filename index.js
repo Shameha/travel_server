@@ -26,12 +26,31 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    const tourCollection = client.db('tourdb').collection('tour');
+app.get('/tour',async(req,res)=>{
+  const cursor = tourCollection.find();
+  const result = await cursor.toArray();
+  res.send(result);
+})
+
+
+   
+    app.post('/tour',async(req,res) =>{
+      const  newTour = req.body;
+      console.log(newTour);
+      const result = await tourCollection.insertOne(newTour);
+      res.send(result);
+    })
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
