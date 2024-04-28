@@ -28,6 +28,7 @@ async function run() {
     await client.connect();
 
     const tourCollection = client.db('tourdb').collection('tour');
+    const countryCollection = client.db('countrydb').collection('country');
 app.get('/tour',async(req,res)=>{
   const cursor = tourCollection.find();
   const result = await cursor.toArray();
@@ -43,6 +44,12 @@ res.send(result)
 })
 
 
+app.get("/tour/:email",  async(req,res)=>{
+  console.log(req.params.email);
+  const result =await tourCollection.find({ email:req.params.email }).toArray();
+res.send(result)
+  
+})
    
     app.post('/tour',async(req,res) =>{
       const  newTour = req.body;
@@ -51,8 +58,13 @@ res.send(result)
       res.send(result);
     })
 
-
-
+   
+app.post('/country',async(req,res)=>{
+  const country = req.body;
+  console.log(country);
+  const result = await countryCollection.insertOne(country)
+  res.send(result)
+})
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
