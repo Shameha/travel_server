@@ -90,13 +90,20 @@ app.put("/updateTour/:id",async(req,res)=>{
       res.send(result);
     })
 
-   
+app.delete("/delete/:id",async(req,res)=>{
+  const result = await tourCollection.deleteOne({_id:new ObjectId(req.params.id)})
+  console.log(result);
+  res.send(result)
+})
+    
+
 app.post('/country',async(req,res)=>{
   const country = req.body;
   console.log(country);
   const result = await countryCollection.insertOne(country)
   res.send(result)
 })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
