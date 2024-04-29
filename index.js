@@ -47,8 +47,40 @@ res.send(result)
 app.get("/intour/:email",  async(req,res)=>{
   console.log(req.params.email);
   const result =await tourCollection.find({ email:req.params.email }).toArray();
-res.send(result)
+console.log(result);
+  res.send(result)
+
+
   
+})
+
+app.get("/update/:id",async(req,res)=>{
+  // console.log(req.params.id);
+  const id = req.params.id;
+  const query = {_id:new ObjectId(id)}
+  const result = await tourCollection.findOne(query)
+  console.log(result);
+  res.send(result);
+})
+
+app.put("/updateTour/:id",async(req,res)=>{
+  console.log(req.params.id);
+  const query = {_id: new ObjectId(req.params.id)};
+  const data ={
+    $set:{
+      spot:req.body.spot,
+      country:req.body.country,
+      location:req.body.location,
+      description:req.body.description,
+      cost:req.body.cost,
+      season:req.body.season,
+      time:req.body.time,
+      visitor:req.body.visitor,
+    }
+  }
+  const result =await tourCollection.updateOne(query,data);
+  console.log(result);
+  res.send(result)
 })
    
     app.post('/tour',async(req,res) =>{
