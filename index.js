@@ -5,7 +5,12 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors(
+{
+  origin :["http://localhost:5173","https://assignment10-92c57.web.app","https://assignment10-92c57.firebaseapp.com"]
+}
+
+));
 app.use(express.json());
 
 
