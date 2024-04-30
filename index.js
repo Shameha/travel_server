@@ -25,16 +25,24 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const tourCollection = client.db('tourdb').collection('tour');
-    const countryCollection = client.db('countrydb').collection('country');
+    const countryCollection = client.db('tourdb').collection('country_side');
 app.get('/tour',async(req,res)=>{
   const cursor = tourCollection.find();
   const result = await cursor.toArray();
   res.send(result);
 
 })
+app.get('/country_side',async(req,res)=>{
+  const cursor = countryCollection.find();
+  const result = await cursor.toArray();
+  console.log(result);
+  res.send(result);
+
+})
+
 
 app.get('/tour/:id',async(req,res)=>{
   const id = req.params.id;
@@ -76,6 +84,7 @@ app.put("/updateTour/:id",async(req,res)=>{
       season:req.body.season,
       time:req.body.time,
       visitor:req.body.visitor,
+      photo:req.body.photo,
     }
   }
   const result =await tourCollection.updateOne(query,data);
@@ -97,12 +106,18 @@ app.delete("/delete/:id",async(req,res)=>{
 })
     
 
-app.post('/country',async(req,res)=>{
-  const country = req.body;
-  console.log(country);
-  const result = await countryCollection.insertOne(country)
-  res.send(result)
-})
+// app.post('/country',async(req,res)=>{
+//   const country = req.body;
+//   console.log(country);
+//   const result = await countryCollection.insertOne(country)
+//   res.send(result)
+// })
+
+// app.get('/country',async(req,res)=>{
+//   const cursor = countryCollection.find();
+//   const countrys = await cursor.toArray();
+//   res.send(countrys);
+// })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
